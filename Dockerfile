@@ -3,7 +3,7 @@ FROM node:20
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-RUN npm install && chmod +x ./node_modules/.bin/node-pg-migrate
+RUN npm install
 
 COPY . .
 
