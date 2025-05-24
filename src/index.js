@@ -79,40 +79,45 @@ app.get('/api/weather', async (req, res) => {
 app.post('/api/subscribe', async (req, res) => {
     const { email, city, frequency } = req.query;
 
-    // Validate input
+    console.log("Incoming subscribe request:", { email, city, frequency });
+
     if (!email || !city || !['daily', 'hourly'].includes(frequency)) {
+        console.log("Validation failed");
         return res.status(400).json({ error: 'Invalid input' });
     }
 
-    const valid = await isValidCity(city);
-    if (!valid) {
-        return res.status(400).json({ error: 'Invalid input: city not found' });
-    }
-
     try {
-        // Check for existing subscription
+        const valid = await isValidCity(city);
+        if (!valid) {
+            console.log("City not valid");
+            return res.status(400).json({ error: 'Invalid input: city not found' });
+        }
+
         const existing = await pool.query(
             'SELECT * FROM subscriptions WHERE email = $1 AND city = $2',
             [email, city]
         );
 
         if (existing.rows.length > 0) {
+            console.log("Already subscribed");
             return res.status(409).json({ error: 'Email already subscribed' });
         }
 
-        // Insert new subscription
         const token = uuidv4();
         await pool.query(
             'INSERT INTO subscriptions(email, city, frequency, confirmed, token) VALUES ($1, $2, $3, $4, $5)',
             [email, city, frequency, false, token]
         );
 
+        console.log("Subscription inserted");
         return res.status(200).json({ message: 'Confirmation email sent.' });
 
     } catch (err) {
+        console.error("Error in /api/subscribe:", err.message);
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 
 
