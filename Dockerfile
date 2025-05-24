@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npm run migrate && npm start"]
+CMD ["sh", "-c", "npx node-pg-migrate up -m migrations -j sql -d postgres://$PGUSER:$PGPASSWORD@$PGHOST:$PGPORT/$PGDATABASE && npm start"]
