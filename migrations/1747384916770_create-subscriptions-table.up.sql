@@ -1,7 +1,9 @@
 CREATE TABLE subscriptions (
-  id SERIAL PRIMARY KEY,
-  email VARCHAR(255) NOT NULL,
-  city VARCHAR(100),
-  frequency VARCHAR(20),
-  subscribed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id SERIAL PRIMARY KEY,
+    email TEXT NOT NULL,
+    city TEXT NOT NULL,
+    frequency TEXT NOT NULL,
+    confirmed BOOLEAN DEFAULT FALSE,
+    token TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
 );

@@ -1,15 +1,19 @@
 {
-  "name": "weather-app",
+  "name": "test-app",
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "migrate": "node-pg-migrate up -d migrations -m sql-file"
+    "migrate": "node-pg-migrate up -m migrations -j sql -d postgres://$PGUSER:$PGPASSWORD@$PGHOST:$PGPORT/$PGDATABASE"
   },
   "dependencies": {
-    "pg": "^8.11.0"
+    "axios": "^1.9.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "pg": "^8.16.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
-    "node-pg-migrate": "^7.0.1"
+    "node-pg-migrate": "^7.9.1"
   }
 }
