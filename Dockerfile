@@ -3,13 +3,10 @@ FROM node:20
 WORKDIR /usr/src/app
 
 COPY package*.json ./
-RUN npm install
+RUN npm install && chmod +x ./node_modules/.bin/node-pg-migrate
 
 COPY . .
 
-# Ensure node_modules/.bin is in PATH
-ENV PATH=/usr/src/app/node_modules/.bin:$PATH
-
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx node-pg-migrate up -m migrations -j sql -d postgres://$PGUSER:$PGPASSWORD@$PGHOST:$PGPORT/$PGDATABASE && npm start"]
+CMD ["sh", "-c", "npm run migrate && npm start"]
